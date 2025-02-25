@@ -1,0 +1,30 @@
+{
+  "name": "create-minimalist-app",
+  "description": "Create minimalist app with various options",
+  "version": "0.1.0",
+  "type": "module",
+  "bin": {
+    "create-minimalist-app": "./dist/cli.js"
+  },
+  "files": [
+    "src",
+    "minimalist-react-js",
+    "minimalist-react-ts"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepare": "npm run build"
+  },
+  "dependencies": {
+    "commander": "^11.0.0",
+    "fs-extra": "^11.1.1",
+    "chalk": "^5.3.0",
+    "inquirer": "^9.2.7"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.1",
+    "@types/inquirer": "^9.0.3",
+    "@types/node": "^20.1.0",
+    "typescript": "^5.0.4"
+  }
+}
