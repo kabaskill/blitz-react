@@ -1,40 +1,16 @@
 #!/usr/bin/env node
-import { program } from "commander";
-import inquirer from "inquirer";
-import fs from "fs-extra";
-import path, { dirname } from "path";
-import chalk from "chalk";
-import { execSync } from "child_process";
-import { fileURLToPath } from "url";
-import {
-  TemplateConfig,
-  UserOptions,
-  UserPromptAnswers,
-  TemplateType,
-  UserQuestions,
-} from "./types";
+import fs from 'fs-extra';
+import path from 'path';
+import chalk from 'chalk';
+import { Command } from 'commander';
+import inquirer from 'inquirer';
+import { execSync } from 'child_process';
+import { UserOptions, TemplateType, UserQuestions, UserPromptAnswers } from './types.js';
+import { TEMPLATES } from './config.js';
+import { generateProject } from './generators.js';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-const TEMPLATES: Record<TemplateType, TemplateConfig> = {
-  "react-js": {
-    name: "React (JavaScript)",
-    directory: "minimalist-react-js",
-    dependencies: {
-      install: ["npm install"],
-      start: ["npm run dev"],
-    },
-  },
-  "react-ts": {
-    name: "React (TypeScript)",
-    directory: "minimalist-react-ts",
-    dependencies: {
-      install: ["npm install"],
-      start: ["npm run dev"],
-    },
-  },
-};
+// Create a new program instance
+const program = new Command();
 
 async function promptUser(projectName?: string): Promise<UserOptions> {
   const questions: UserQuestions = [
@@ -54,7 +30,6 @@ async function promptUser(projectName?: string): Promise<UserOptions> {
         value: key,
       })),
     },
-
     {
       type: "confirm",
       name: "installDeps",
@@ -69,36 +44,13 @@ async function promptUser(projectName?: string): Promise<UserOptions> {
     },
   ];
 
-  const answers = await inquirer.prompt<UserPromptAnswers>(questions as any);
+  const answers = await inquirer.prompt<UserPromptAnswers>(questions);
   return {
     projectName: projectName || answers.projectName || "my-app",
     template: answers.template,
     installDeps: answers.installDeps,
     initGit: answers.initGit,
   };
-}
-
-async function installDependencies(targetDir: string, options: UserOptions): Promise<void> {
-  console.log(chalk.cyan("\nInstalling dependencies..."));
-
-  // Core React dependencies
-  const dependencies = ["react@^latest", "react-dom@^latest", "tailwindcss", "@tailwindcss/vite"];
-
-  // Dev dependencies
-  const devDependencies = ["@vitejs/plugin-react", "vite"];
-
-  if (options.template === "react-ts") {
-    devDependencies.push("typescript", "@types/react", "@types/react-dom");
-  }
-
-  try {
-    process.chdir(targetDir);
-    execSync(`npm install ${dependencies.join(" ")}`, { stdio: "inherit" });
-    execSync(`npm install -D ${devDependencies.join(" ")}`, { stdio: "inherit" });
-  } catch (error) {
-    console.error(chalk.red("Failed to install dependencies"), error);
-    throw error;
-  }
 }
 
 function initializeGit(targetDir: string): void {
@@ -113,9 +65,20 @@ function initializeGit(targetDir: string): void {
   }
 }
 
+async function installDependencies(targetDir: string, options: UserOptions): Promise<void> {
+  console.log(chalk.cyan("\nInstalling dependencies..."));
+
+  try {
+    process.chdir(targetDir);
+    execSync(`npm install`, { stdio: "inherit" });
+    console.log(chalk.green("\nDependencies installed successfully"));
+  } catch (error) {
+    console.error(chalk.red("Failed to install dependencies"));
+    throw error;
+  }
+}
+
 async function createProject(options: UserOptions): Promise<void> {
-  const templateConfig = TEMPLATES[options.template];
-  const templateDir = path.join(__dirname, "..", templateConfig.directory);
   const targetDir = path.join(process.cwd(), options.projectName);
 
   try {
@@ -125,14 +88,8 @@ async function createProject(options: UserOptions): Promise<void> {
       process.exit(1);
     }
 
-    // Copy template
-    await fs.copy(templateDir, targetDir);
-
-    // Update package.json
-    const packageJsonPath = path.join(targetDir, "package.json");
-    const packageJson = await fs.readJson(packageJsonPath);
-    packageJson.name = options.projectName;
-    await fs.writeJson(packageJsonPath, packageJson, { spaces: 2 });
+    // Generate project files from templates
+    await generateProject(options);
 
     // Install dependencies if requested
     if (options.installDeps) {
@@ -174,8 +131,8 @@ program
         ? {
             projectName: projectName || "my-app",
             template: options.template as TemplateType,
-            installDeps: options.install,
-            initGit: options.git,
+            installDeps: options.install !== false,
+            initGit: options.git !== false,
           }
         : await promptUser(projectName);
 
