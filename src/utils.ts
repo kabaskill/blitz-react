@@ -1,9 +1,9 @@
-import fs from 'fs-extra';
-import path from 'path';
-import chalk from 'chalk';
-import { execSync } from 'child_process';
-import { UserOptions } from './types.js';
-import { getDependencies } from './config.js';
+import fs from "fs-extra";
+import path from "path";
+import { execSync } from "child_process";
+import { UserOptions } from "./types.js";
+import { getDependencies } from "./config.js";
+import pc from "picocolors";
 
 export function initializeGit(targetDir: string): void {
   try {
@@ -11,14 +11,14 @@ export function initializeGit(targetDir: string): void {
     execSync("git init", { stdio: "ignore" });
     execSync("git add .", { stdio: "ignore" });
     execSync('git commit -m "Initial commit"', { stdio: "ignore" });
-    console.log(chalk.green("\nInitialized git repository"));
+    console.log(pc.green("\nInitialized git repository"));
   } catch (error) {
-    console.warn(chalk.yellow("\nFailed to initialize git repository"));
+    console.warn(pc.yellow("\nFailed to initialize git repository"));
   }
 }
 
 export async function installDependencies(targetDir: string, options: UserOptions): Promise<void> {
-  console.log(chalk.cyan("\nInstalling dependencies..."));
+  console.log(pc.cyan("\nInstalling dependencies..."));
 
   const { dependencies, devDependencies } = getDependencies(options.template);
 
@@ -27,7 +27,7 @@ export async function installDependencies(targetDir: string, options: UserOption
     execSync(`npm install ${dependencies.join(" ")}`, { stdio: "inherit" });
     execSync(`npm install -D ${devDependencies.join(" ")}`, { stdio: "inherit" });
   } catch (error) {
-    console.error(chalk.red("Failed to install dependencies"), error);
+    console.error(pc.red("Failed to install dependencies"), error);
     throw error;
   }
 }

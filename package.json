@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "type": "module",
   "bin": {
-    "create-minimalist-app": "./dist/cli.js"
+    "create-minimalist-app": "dist/cli.js"
   },
   "scripts": {
     "build": "tsc",
@@ -11,12 +11,12 @@
     "dev": "tsc && node dist/cli.js"
   },
   "dependencies": {
-    "chalk": "^5.4.1",
     "commander": "^11.1.0",
     "fs-extra": "^11.3.0",
     "handlebars": "^4.7.8",
     "inquirer": "^9.3.7",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "picocolors": "^1.1.1"
   },
   "devDependencies": {
     "@types/fs-extra": "^11.0.4",

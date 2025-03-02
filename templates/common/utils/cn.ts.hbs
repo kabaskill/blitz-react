@@ -1,0 +1,10 @@
+{{#if isTypeScript}}
+  import { ClassValue, clsx } from 'clsx'
+{{else}}
+  import { clsx } from 'clsx'
+{{/if}}
+import { twMerge } from 'tailwind-merge'
+
+export const cn = ({{#if isTypeScript}}...inputs: ClassValue[]{{else}}...inputs{{/if}}) => {
+   return twMerge(clsx(inputs))
+}

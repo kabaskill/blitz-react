@@ -1,18 +1,16 @@
 import { execSync } from "child_process";
 import { TemplateConfig, TemplateType } from "./types.js";
 
-// Function to get latest version of a package
 export function getLatestVersion(packageName: string): string {
   try {
     const version = execSync(`npm view ${packageName} version`).toString().trim();
     return version;
   } catch (error) {
     console.warn(`Couldn't fetch latest version for ${packageName}, using fallback`);
-    return "latest"; // Fallback to 'latest' tag
+    return "latest"; 
   }
 }
 
-// Define packages needed for each template
 export const PACKAGES = {
   core: {
     dependencies: ["react", "react-dom"],
@@ -36,7 +34,6 @@ export const TEMPLATES: Record<TemplateType, TemplateConfig> = {
   },
 };
 
-// Get dependencies based on template with latest versions
 export function getDependencies(template: TemplateType) {
   const dependencies = PACKAGES.core.dependencies.map((pkg) => `${pkg}@${getLatestVersion(pkg)}`);
 

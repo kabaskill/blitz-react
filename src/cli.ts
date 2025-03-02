@@ -1,15 +1,14 @@
 #!/usr/bin/env node
-import fs from 'fs-extra';
-import path from 'path';
-import chalk from 'chalk';
-import { Command } from 'commander';
-import inquirer from 'inquirer';
-import { execSync } from 'child_process';
-import { UserOptions, TemplateType, UserQuestions, UserPromptAnswers } from './types.js';
-import { TEMPLATES } from './config.js';
-import { generateProject } from './generators.js';
+import fs from "fs-extra";
+import path from "path";
+import pc from "picocolors";
+import { Command } from "commander";
+import inquirer from "inquirer";
+import { UserOptions, TemplateType, UserQuestions, UserPromptAnswers } from "./types.js";
+import { TEMPLATES } from "./config.js";
+import { generateProject } from "./generators.js";
+import { initializeGit, installDependencies } from "./utils.js";
 
-// Create a new program instance
 const program = new Command();
 
 async function promptUser(projectName?: string): Promise<UserOptions> {
@@ -53,66 +52,44 @@ async function promptUser(projectName?: string): Promise<UserOptions> {
   };
 }
 
-function initializeGit(targetDir: string): void {
-  try {
-    process.chdir(targetDir);
-    execSync("git init", { stdio: "ignore" });
-    execSync("git add .", { stdio: "ignore" });
-    execSync('git commit -m "Initial commit"', { stdio: "ignore" });
-    console.log(chalk.green("\nInitialized git repository"));
-  } catch (error) {
-    console.warn(chalk.yellow("\nFailed to initialize git repository"));
-  }
-}
-
-async function installDependencies(targetDir: string, options: UserOptions): Promise<void> {
-  console.log(chalk.cyan("\nInstalling dependencies..."));
-
-  try {
-    process.chdir(targetDir);
-    execSync(`npm install`, { stdio: "inherit" });
-    console.log(chalk.green("\nDependencies installed successfully"));
-  } catch (error) {
-    console.error(chalk.red("Failed to install dependencies"));
-    throw error;
-  }
-}
-
 async function createProject(options: UserOptions): Promise<void> {
   const targetDir = path.join(process.cwd(), options.projectName);
 
+  console.clear();
+
+  console.log(pc.cyan(pc.bold("====================================")));
+  console.log(pc.cyan(pc.bold("  Create Minimalist App")));
+  console.log(pc.cyan(pc.bold("====================================")));
+  console.log("");
+  console.log(pc.white("Let's set up your new project!\n"));
+
   try {
-    // Check if directory exists
     if (fs.existsSync(targetDir)) {
-      console.error(chalk.red(`Error: Directory ${options.projectName} already exists`));
+      console.error(pc.red(`Error: Directory ${options.projectName} already exists`));
       process.exit(1);
     }
 
-    // Generate project files from templates
     await generateProject(options);
 
-    // Install dependencies if requested
     if (options.installDeps) {
       await installDependencies(targetDir, options);
     }
 
-    // Initialize git if requested
     if (options.initGit) {
       initializeGit(targetDir);
     }
 
-    // Success message
-    console.log(chalk.green("\nProject created successfully! 🎉"));
+    console.log(pc.green("\nProject created successfully! 🎉"));
     console.log("\nNext steps:");
-    console.log(chalk.cyan(`  cd ${options.projectName}`));
+    console.log(pc.cyan(`  cd ${options.projectName}`));
 
     if (!options.installDeps) {
-      console.log(chalk.cyan("  npm install"));
+      console.log(pc.cyan("  npm install"));
     }
 
-    console.log(chalk.cyan("  npm run dev"));
+    console.log(pc.cyan("  npm run dev"));
   } catch (error) {
-    console.error(chalk.red("Error creating project:"), error);
+    console.error(pc.red("Error creating project:"), error);
     process.exit(1);
   }
 }
@@ -138,7 +115,7 @@ program
 
       await createProject(userOptions);
     } catch (error) {
-      console.error(chalk.red("Error:"), error);
+      console.error(pc.red("Error:"), error);
       process.exit(1);
     }
   });

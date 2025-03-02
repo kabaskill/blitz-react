@@ -1,0 +1,88 @@
+# {{projectName}}
+
+A minimalist React application built with modern tools.
+
+## Getting Started
+
+These instructions will help you get the project up and running on your local machine for development and testing purposes.
+
+### Installation
+
+```bash
+# Install dependencies
+npm install
+```
+
+### Development
+
+Start the development server with hot reload:
+
+```bash
+npm run dev
+```
+
+Your application will be available at [http://localhost:5173](http://localhost:5173).
+
+### Building for Production
+
+To build the application for production:
+
+```bash
+npm run build
+```
+
+The built assets will be in the `dist` directory.
+
+### Preview Production Build
+
+To preview the production build locally:
+
+```bash
+npm run preview
+```
+
+## Project Structure
+
+```
+{{projectName}}/
+├── public/
+│   └── vite.svg
+├── src/
+│   ├── App.{{#if isTypeScript}}tsx{{else}}jsx{{/if}}
+│   ├── main.{{#if isTypeScript}}tsx{{else}}jsx{{/if}}
+│   └── styles.css
+├── .gitignore
+├── eslint.config.js
+├── index.html
+├── package.json
+{{#if isTypeScript}}
+├── tsconfig.json
+├── tsconfig.node.json
+{{/if}}
+└── vite.config.{{#if isTypeScript}}ts{{else}}js{{/if}}
+```
+
+## Technologies
+
+This project is built with:
+
+- [React](https://react.dev/) 
+- [Vite](https://vitejs.dev/) 
+- [Tailwind CSS](https://tailwindcss.com/) 
+{{#if isTypeScript}}
+- [TypeScript](https://www.typescriptlang.org/) 
+{{/if}}
+
+## Customization
+
+### Styling
+
+This project uses Tailwind CSS for styling. You can customize the configuration in:
+- `tailwind.config.js`
+
+### Adding Dependencies
+
+```bash
+npm install package-name
+```
+
