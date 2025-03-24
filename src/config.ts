@@ -37,22 +37,46 @@ export const TEMPLATES: Record<TemplateType, TemplateConfig> = {
   },
 };
 
-export function getDependencies(template: TemplateType) {
-  const dependencies = PACKAGES.core.dependencies.map((pkg) => `${pkg}@${getLatestVersion(pkg)}`);
+export async function getDependencies(template: TemplateType) {
+  // Create a function to get package with version
+  async function getPackageWithVersion(pkg: string) {
+    const version = await getLatestVersion(pkg);
+    return `${pkg}@${version}`;
+  }
 
-  const devDependencies = PACKAGES.core.devDependencies.map(
-    (pkg) => `${pkg}@${getLatestVersion(pkg)}`
-  );
+  // Get core dependencies
+  const dependencyPromises = PACKAGES.core.dependencies.map(getPackageWithVersion);
+  const devDependencyPromises = PACKAGES.core.devDependencies.map(getPackageWithVersion);
 
+  // Add TypeScript dependencies if needed
   if (template === "react-ts") {
     PACKAGES.typescript.dependencies.forEach((pkg) => {
-      dependencies.push(`${pkg}@${getLatestVersion(pkg)}`);
+      dependencyPromises.push(getPackageWithVersion(pkg));
     });
 
     PACKAGES.typescript.devDependencies.forEach((pkg) => {
-      devDependencies.push(`${pkg}@${getLatestVersion(pkg)}`);
+      devDependencyPromises.push(getPackageWithVersion(pkg));
     });
   }
 
-  return { dependencies, devDependencies };
+  // Wait for all promises to resolve
+  const dependencies = await Promise.all(dependencyPromises);
+  const devDependencies = await Promise.all(devDependencyPromises);
+
+  // Create an object with package names as keys and versions as values
+  const dependencyMap = Object.fromEntries(
+    dependencies.map(dep => {
+      const [name, version] = dep.split('@');
+      return [name, version];
+    })
+  );
+
+  const devDependencyMap = Object.fromEntries(
+    devDependencies.map(dep => {
+      const [name, version] = dep.split('@');
+      return [name, version];
+    })
+  );
+
+  return { dependencies: dependencyMap, devDependencies: devDependencyMap };
 }

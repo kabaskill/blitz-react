@@ -24,7 +24,7 @@ export async function generateProject(options: UserOptions): Promise<void> {
 }
 
 async function generatePackageJson(targetDir: string, options: UserOptions): Promise<void> {
-  const { dependencies, devDependencies } = getDependencies(options.template);
+  const { dependencies, devDependencies } = await getDependencies(options.template);
 
   const templatePath = path.join(TEMPLATE_DIR, "common/package.json.hbs");
 
@@ -32,10 +32,11 @@ async function generatePackageJson(targetDir: string, options: UserOptions): Pro
     const templateContent = await fs.readFile(templatePath, "utf8");
     const template = Handlebars.compile(templateContent);
 
+    // Convert dependency objects to arrays of package names
     const packageJson = template({
       projectName: options.projectName,
-      dependencies: dependencies.map((dep) => dep.split("@")[0]),
-      devDependencies: devDependencies.map((dep) => dep.split("@")[0]),
+      dependencies: Object.keys(dependencies),
+      devDependencies: Object.keys(devDependencies),
       isTypeScript: options.template === "react-ts",
     });
 

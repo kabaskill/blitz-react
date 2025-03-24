@@ -36,8 +36,17 @@ export async function installDependencies(targetDir: string, options: UserOption
     
     // Show what's being installed
     console.log(pc.dim("Installing packages:"));
-    console.log(pc.dim("- Dependencies: " + Object.keys(dependencies).join(", ")));
-    console.log(pc.dim("- Dev dependencies: " + Object.keys(devDependencies).join(", ")));
+    if (Object.keys(dependencies).length > 0) {
+      console.log(pc.dim("- Dependencies: " + Object.keys(dependencies).join(", ")));
+    } else {
+      console.log(pc.dim("- Dependencies: none"));
+    }
+    
+    if (Object.keys(devDependencies).length > 0) {
+      console.log(pc.dim("- Dev dependencies: " + Object.keys(devDependencies).join(", ")));
+    } else {
+      console.log(pc.dim("- Dev dependencies: none"));
+    }
     
     // Set a timeout for the installation process
     const timeoutMs = 180000; // 3 minutes
