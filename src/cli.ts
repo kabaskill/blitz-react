@@ -2,12 +2,12 @@
 import fs from "fs-extra";
 import path from "path";
 import pc from "picocolors";
-import { Command } from "commander";
+import {Command} from "commander";
 import inquirer from "inquirer";
-import { UserOptions, TemplateType, UserQuestions, UserPromptAnswers } from "./types.js";
-import { TEMPLATES } from "./config.js";
-import { generateProject } from "./generators.js";
-import { initializeGit, installDependencies } from "./utils.js";
+import {UserOptions, TemplateType, UserQuestions, UserPromptAnswers} from "./types.js";
+import {TEMPLATES} from "./config.js";
+import {generateProject} from "./generators.js";
+import {validateProjectName, initializeGit, installDependencies, cleanupFailedProject, checkEnvironment} from "./utils.js";
 
 const program = new Command();
 
@@ -19,6 +19,10 @@ async function promptUser(projectName?: string): Promise<UserOptions> {
       message: "What is your project named?",
       default: "my-app",
       when: () => !projectName,
+      validate: (input: string) => {
+        const result = validateProjectName(input);
+        return result.valid ? true : result.message || "Invalid project name";
+      },
     },
     {
       type: "list",
@@ -54,6 +58,7 @@ async function promptUser(projectName?: string): Promise<UserOptions> {
 
 async function createProject(options: UserOptions): Promise<void> {
   const targetDir = path.join(process.cwd(), options.projectName);
+  let projectCreated = false;
 
   console.clear();
 
@@ -70,14 +75,21 @@ async function createProject(options: UserOptions): Promise<void> {
     }
 
     await generateProject(options);
+    projectCreated = true;
 
     if (options.installDeps) {
-      await installDependencies(targetDir, options);
+      try {
+        await installDependencies(targetDir, options);
+      } catch (error) {
+        console.error(pc.red("Error installing dependencies:"), error);
+        console.log(pc.yellow("Continuing without dependencies. You can install them manually later."));
+      }
     }
 
     if (options.initGit) {
-      initializeGit(targetDir);
+      await initializeGit(targetDir); // This already handles its own errors
     }
+
 
     console.log(pc.green("\nProject created successfully! 🎉"));
     console.log("\nNext steps:");
@@ -90,6 +102,19 @@ async function createProject(options: UserOptions): Promise<void> {
     console.log(pc.cyan("  npm run dev"));
   } catch (error) {
     console.error(pc.red("Error creating project:"), error);
+    if (projectCreated) {
+      console.log(pc.yellow("\nProject was partially created."));
+      const { shouldCleanup } = await inquirer.prompt<{ shouldCleanup: boolean }>([{
+        type: 'confirm',
+        name: 'shouldCleanup',
+        message: 'Would you like to clean up the partially created project?',
+        default: true
+      }]);
+      
+      if (shouldCleanup) {
+        await cleanupFailedProject(targetDir);
+      }
+    }
     process.exit(1);
   }
 }
@@ -104,6 +129,28 @@ program
   .option("--no-git", "Skip git initialization")
   .action(async (projectName, options) => {
     try {
+    
+      await checkEnvironment();
+      
+      // Validate project name if provided
+      if (projectName) {
+        const validation = validateProjectName(projectName);
+        if (!validation.valid) {
+          console.error(pc.red(`Error: ${validation.message}`));
+          process.exit(1);
+        }
+      }
+
+      // Validate template if provided through CLI
+      if (options.template && !Object.keys(TEMPLATES).includes(options.template)) {
+        console.error(pc.red(`Error: Template "${options.template}" does not exist.`));
+        console.log(pc.cyan("Available templates:"));
+        Object.entries(TEMPLATES).forEach(([key, value]) => {
+          console.log(`  - ${key} (${value.name})`);
+        });
+        process.exit(1);
+      }
+
       const userOptions = options.template
         ? {
             projectName: projectName || "my-app",

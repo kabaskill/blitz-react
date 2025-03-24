@@ -1,16 +1,19 @@
-import { execSync } from "child_process";
 import { TemplateConfig, TemplateType } from "./types.js";
+import { promisify } from 'util';
+import { exec } from 'child_process';
+import pc from "picocolors";
 
-export function getLatestVersion(packageName: string): string {
+const execAsync = promisify(exec);
+
+export async function getLatestVersion(packageName: string): Promise<string> {
   try {
-    const version = execSync(`npm view ${packageName} version`).toString().trim();
-    return version;
+    const { stdout } = await execAsync(`npm show ${packageName} version`);
+    return stdout.trim();
   } catch (error) {
-    console.warn(`Couldn't fetch latest version for ${packageName}, using fallback`);
-    return "latest"; 
+    console.warn(pc.yellow(`Warning: Could not fetch latest version for ${packageName}`));
+    return 'latest'; // Fallback to using "latest" tag
   }
 }
-
 export const PACKAGES = {
   core: {
     dependencies: ["react", "react-dom"],

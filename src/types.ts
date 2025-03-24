@@ -26,4 +26,5 @@ export type UserQuestions = Array<{
   default?: string | boolean;
   choices?: Array<{ name: string; value: string }>;
   when?: () => boolean;
+  validate?: (input: string) => boolean | string;
 }>;

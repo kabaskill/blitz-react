@@ -14,7 +14,6 @@ const __dirname = dirname(__filename);
 const TEMPLATE_DIR = path.resolve(__dirname, "..", "templates");
 
 export async function generateProject(options: UserOptions): Promise<void> {
-  const templateType = options.template;
   const targetDir = path.join(process.cwd(), options.projectName);
 
   await fs.ensureDir(targetDir);
@@ -55,11 +54,11 @@ export async function generateProjectFiles(targetDir: string, options: UserOptio
   const commonTemplatesDir = path.join(TEMPLATE_DIR, "common");
 
   const latestVersions = {
-    react: getLatestVersion("react"),
-    reactDom: getLatestVersion("react-dom"),
-    tailwindcss: getLatestVersion("tailwindcss"),
-    vite: getLatestVersion("vite"),
-    typescript: options.template === "react-ts" ? getLatestVersion("typescript") : null,
+    react: await getLatestVersion("react"),
+    reactDom: await getLatestVersion("react-dom"),
+    tailwindcss: await getLatestVersion("tailwindcss"),
+    vite: await getLatestVersion("vite"),
+    typescript: options.template === "react-ts" ? await getLatestVersion("typescript") : null,
   };
 
   try {
