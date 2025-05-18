@@ -1,28 +1,44 @@
-import { useState } from 'react'
+import { useState } from "react";
+import { Footer } from "./components/Footer";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-gray-100 p-4">
-      <div className="w-full max-w-md space-y-8 rounded-lg bg-white p-6 shadow-md">
-        <h1 className="text-2xl font-bold text-center text-gray-800">
-          {{projectName}}
-        </h1>
-        <p className="text-center text-gray-600">
-          Edit <code className="font-mono bg-gray-100 p-1 rounded">src/App.jsx</code> and save to test HMR
-        </p>
-        <div className="flex justify-center">
-          <button
-            className="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
-            onClick={() => setCount((count) => count + 1)}
-          >
-            count is {count}
-          </button>
+       <main className="flex min-h-screen flex-col ">
+      <section className="flex flex-1 flex-col items-center justify-center p-4">
+        <div className="w-full max-w-xl space-y-12 rounded-lg bg-foreground p-6 shadow-md animate-fade-in">
+          <h1 className="text-3xl font-bold text-center text-gray-800">
+            my-app
+          </h1>
+          <p className="text-center text-xl font-bold text-secondary animate-bounce">
+            🎉 Hurray! 🎉
+          </p>
+          <p className="text-center text-gray-600">
+            Your React app is up and running!
+          </p>
+
+          <div className="mt-6 text-center">
+            <p className="text-sm text-gray-500">
+              Check out the{" "}
+              <a
+                href="https://github.com/kabaskill/minimal-react"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary hover:text-secondary underline"
+              >
+                minimal-react
+              </a>{" "}
+              repository for more information
+            </p>
+          </div>
+    
         </div>
-      </div>
-    </div>
-  )
+      </section>
+
+      <Footer />
+    </main>
+  );
 }
 
-export default App
+export default App;

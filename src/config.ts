@@ -1,6 +1,6 @@
 import { TemplateConfig, TemplateType } from "./types.js";
-import { promisify } from 'util';
-import { exec } from 'child_process';
+import { promisify } from "util";
+import { exec } from "child_process";
 import pc from "picocolors";
 
 const execAsync = promisify(exec);
@@ -12,7 +12,7 @@ export async function getLatestVersion(packageName: string): Promise<string> {
   if (versionCache.has(packageName)) {
     return versionCache.get(packageName)!;
   }
-  
+
   try {
     const { stdout } = await execAsync(`npm show ${packageName} version`);
     const version = stdout.trim();
@@ -21,13 +21,13 @@ export async function getLatestVersion(packageName: string): Promise<string> {
     return version;
   } catch (error) {
     console.warn(pc.yellow(`Warning: Could not fetch latest version for ${packageName}`));
-    return 'latest';
+    return "latest";
   }
 }
 
 export const PACKAGES = {
   core: {
-    dependencies: ["react", "react-dom"],
+    dependencies: ["react", "react-dom", "clsx", "tailwind-merge"],
     devDependencies: ["vite", "@vitejs/plugin-react", "tailwindcss", "@tailwindcss/vite"],
   },
 
@@ -76,15 +76,15 @@ export async function getDependencies(template: TemplateType) {
 
   // Create an object with package names as keys and versions as values
   const dependencyMap = Object.fromEntries(
-    dependencies.map(dep => {
-      const [name, version] = dep.split('@');
+    dependencies.map((dep) => {
+      const [name, version] = dep.split("@");
       return [name, version];
     })
   );
 
   const devDependencyMap = Object.fromEntries(
-    devDependencies.map(dep => {
-      const [name, version] = dep.split('@');
+    devDependencies.map((dep) => {
+      const [name, version] = dep.split("@");
       return [name, version];
     })
   );

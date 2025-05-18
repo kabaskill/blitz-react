@@ -63,8 +63,16 @@ export async function generateProjectFiles(targetDir: string, options: UserOptio
   };
 
   try {
-    await processTemplateDirectory(commonTemplatesDir, targetDir, options, latestVersions);
-    await processTemplateDirectory(templateBaseDir, targetDir, options, latestVersions);
+    // Add current year for LICENSE template
+    const templateData = {
+      projectName: options.projectName,
+      versions: latestVersions,
+      isTypeScript: options.template === "react-ts",
+      currentYear: new Date().getFullYear(),
+    };
+
+    await processTemplateDirectory(commonTemplatesDir, targetDir, options, templateData);
+    await processTemplateDirectory(templateBaseDir, targetDir, options, templateData);
   } catch (error) {
     console.error(pc.red("Error generating project files:"), error);
     throw error;
@@ -75,7 +83,7 @@ async function processTemplateDirectory(
   sourceDir: string,
   targetDir: string,
   options: UserOptions,
-  versions: Record<string, string | null>,
+  templateData: Record<string, any>,
   relativePath: string = ""
 ): Promise<void> {
   try {
@@ -101,17 +109,13 @@ async function processTemplateDirectory(
           sourceDir,
           targetDir,
           options,
-          versions,
+          templateData,
           path.join(relativePath, entry.name)
         );
       } else if (entry.name.endsWith(".hbs")) {
         const content = await fs.readFile(entrySourcePath, "utf8");
         const template = Handlebars.compile(content);
-        const processedContent = template({
-          projectName: options.projectName,
-          versions: versions,
-          isTypeScript: options.template === "react-ts",
-        });
+        const processedContent = template(templateData);
 
         ensureDirectoryExistence(targetPath);
         await fs.writeFile(targetPath, processedContent);

@@ -2,12 +2,18 @@
 import fs from "fs-extra";
 import path from "path";
 import pc from "picocolors";
-import {Command} from "commander";
+import { Command } from "commander";
 import inquirer from "inquirer";
-import {UserOptions, TemplateType, UserQuestions, UserPromptAnswers} from "./types.js";
-import {TEMPLATES} from "./config.js";
-import {generateProject} from "./generators.js";
-import {validateProjectName, initializeGit, installDependencies, cleanupFailedProject, checkEnvironment} from "./utils.js";
+import { UserOptions, TemplateType, UserQuestions, UserPromptAnswers } from "./types.js";
+import { TEMPLATES } from "./config.js";
+import { generateProject } from "./generators.js";
+import {
+  validateProjectName,
+  initializeGit,
+  installDependencies,
+  cleanupFailedProject,
+  checkEnvironment,
+} from "./utils.js";
 
 const program = new Command();
 
@@ -78,18 +84,13 @@ async function createProject(options: UserOptions): Promise<void> {
     projectCreated = true;
 
     if (options.installDeps) {
-      try {
-        await installDependencies(targetDir, options);
-      } catch (error) {
-        console.error(pc.red("Error installing dependencies:"), error);
-        console.log(pc.yellow("Continuing without dependencies. You can install them manually later."));
-      }
+      // installDependencies now handles its own cleanup on failure
+      await installDependencies(targetDir, options);
     }
 
     if (options.initGit) {
       await initializeGit(targetDir); // This already handles its own errors
     }
-
 
     console.log(pc.green("\nProject created successfully! 🎉"));
     console.log("\nNext steps:");
@@ -102,17 +103,22 @@ async function createProject(options: UserOptions): Promise<void> {
     console.log(pc.cyan("  npm run dev"));
   } catch (error) {
     console.error(pc.red("Error creating project:"), error);
+
     if (projectCreated) {
       console.log(pc.yellow("\nProject was partially created."));
-      const { shouldCleanup } = await inquirer.prompt<{ shouldCleanup: boolean }>([{
-        type: 'confirm',
-        name: 'shouldCleanup',
-        message: 'Would you like to clean up the partially created project?',
-        default: true
-      }]);
-      
+      const { shouldCleanup } = await inquirer.prompt<{ shouldCleanup: boolean }>([
+        {
+          type: "confirm",
+          name: "shouldCleanup",
+          message: "Would you like to clean up the partially created project?",
+          default: true,
+        },
+      ]);
+
       if (shouldCleanup) {
         await cleanupFailedProject(targetDir);
+      } else {
+        console.log(pc.yellow(`You can manually complete the setup in: ${targetDir}`));
       }
     }
     process.exit(1);
@@ -129,9 +135,8 @@ program
   .option("--no-git", "Skip git initialization")
   .action(async (projectName, options) => {
     try {
-    
       await checkEnvironment();
-      
+
       // Validate project name if provided
       if (projectName) {
         const validation = validateProjectName(projectName);
