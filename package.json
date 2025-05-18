@@ -1,9 +1,22 @@
 {
-  "name": "create-minimalist-app",
+  "name": "minimal-react",
   "version": "0.1.0",
-  "type": "module",
+  "description": "CLI tool for creating minimal React applications with zero configuration",
+  "main": "dist/index.js",
   "bin": {
-    "create-minimalist-app": "dist/cli.js"
+    "minimal-react": "./dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "templates"
+  ],
+  "type": "module",
+  "keywords": ["react", "starter", "cli", "boilerplate", "minimal", "create-react-app", "alternative"],
+  "author": "Oguz Kabasakal <oguzkabasakal@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kabaskill/minimal-react"
   },
   "scripts": {
     "build": "tsc",

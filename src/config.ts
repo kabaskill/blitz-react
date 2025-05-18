@@ -5,15 +5,26 @@ import pc from "picocolors";
 
 const execAsync = promisify(exec);
 
+const versionCache = new Map<string, string>();
+
 export async function getLatestVersion(packageName: string): Promise<string> {
+  // Check cache first
+  if (versionCache.has(packageName)) {
+    return versionCache.get(packageName)!;
+  }
+  
   try {
     const { stdout } = await execAsync(`npm show ${packageName} version`);
-    return stdout.trim();
+    const version = stdout.trim();
+    // Cache the result
+    versionCache.set(packageName, version);
+    return version;
   } catch (error) {
     console.warn(pc.yellow(`Warning: Could not fetch latest version for ${packageName}`));
-    return 'latest'; // Fallback to using "latest" tag
+    return 'latest';
   }
 }
+
 export const PACKAGES = {
   core: {
     dependencies: ["react", "react-dom"],
