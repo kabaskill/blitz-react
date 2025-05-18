@@ -1,59 +1,45 @@
-#
-{{projectName}}
+# {{projectName}}
 
 <div align="center">
-
-  [![Made with
-  React](https://img.shields.io/badge/Made%20with-React-61DAFB?style=flat-square&logo=react)](https://reactjs.org/)
-  [![Powered by
-  Vite](https://img.shields.io/badge/Powered%20by-Vite-646CFF?style=flat-square&logo=vite)](https://vitejs.dev/)
-  [![Using Tailwind
-  CSS](https://img.shields.io/badge/Using-Tailwind%20CSS-38B2AC?style=flat-square&logo=tailwind-css)](https://tailwindcss.com/)
+  [![Made with React](https://img.shields.io/badge/Made%20with-React-61DAFB?style=flat-square&logo=react)](https://reactjs.org/)
+  [![Powered by Vite](https://img.shields.io/badge/Powered%20by-Vite-646CFF?style=flat-square&logo=vite)](https://vitejs.dev/)
+  [![Using Tailwind v4](https://img.shields.io/badge/Using-Tailwind%20CSS-38B2AC?style=flat-square&logo=tailwind-css)](https://tailwindcss.com/)
   {{#if isTypeScript}}
     [![TypeScript](https://img.shields.io/badge/Built%20with-TypeScript-3178C6?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
   {{/if}}
-  [![License:
-  MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
-
 </div>
 
-A minimalist React application built with modern tools. ## 🚀 Quick Start These instructions will
-help you get the project up and running on your local machine. ### Prerequisites - Node.js (v16.0.0
-or higher) - npm or yarn ### Installation ```bash # Install dependencies npm install # OR yarn
-install ``` ### Development Start the development server with hot reload: ```bash npm run dev # OR
-yarn dev ``` Your application will be available at [http://localhost:5173](http://localhost:5173).
-### Building for Production To build the application for production: ```bash npm run build # OR yarn
-build ``` The built assets will be in the `dist` directory. ### Preview Production Build To preview
-the production build locally: ```bash npm run preview # OR yarn preview ``` ## 📂 Project Structure
-```
-{{projectName}}/ ├── public/ │ └── vite.svg ├── src/ │ ├── App.{{#if
-  isTypeScript
-}}tsx{{else}}jsx{{/if}}
-│ ├── main.{{#if isTypeScript}}tsx{{else}}jsx{{/if}}
-│ └── styles.css ├── .gitignore ├── eslint.config.js ├── index.html ├── package.json
-{{#if isTypeScript}}
-  ├── tsconfig.json ├── tsconfig.node.json
-{{/if}}
-└── vite.config.{{#if isTypeScript}}ts{{else}}js{{/if}}
-``` ## 🛠️ Technologies This project is built with: - [React](https://react.dev/) - A JavaScript
-library for building user interfaces - [Vite](https://vitejs.dev/) - Next Generation Frontend
-Tooling - [Tailwind CSS](https://tailwindcss.com/) - A utility-first CSS framework
-{{#if isTypeScript}}
-  - [TypeScript](https://www.typescriptlang.org/) - Typed JavaScript at Any Scale
-{{/if}}
+## 🚀 Quick Start
 
-## 🎨 Customization ### Styling This project uses Tailwind CSS for styling. You can customize the
-configuration in: - `tailwind.config.js` ### Adding Dependencies ```bash npm install package-name #
-OR yarn add package-name ``` ## 🤝 Contributing Contributions, issues and feature requests are
-welcome! Feel free to check [issues page](https://github.com/yourusername/{{projectName}}/issues).
-1. Fork the project 2. Create your feature branch (`git checkout -b feature/amazing-feature`) 3.
-Commit your changes (`git commit -m 'Add some amazing feature'`) 4. Push to the branch (`git push
-origin feature/amazing-feature`) 5. Open a Pull Request ## 📝 License This project is
-[MIT](./LICENSE) licensed. ---
+These instructions will help you get the project up and running on your local machine.
+
+### Prerequisites
+
+- Node.js (v16.0.0 or higher)
+
+## Installation
+
+### Install dependencies
+
+`npm install`
+
+### Development 
+Start the development server.
+
+`npm run dev`
+
+Your application will be available at [http://localhost:5173](http://localhost:5173).
+
+### Building for Production
+
+To build the application for production:
+
+`npm run build`
+
+The built assets will be in the `dist` directory. 
+
 
 <div align="center">
-  <sub>Built with ❤️ by
-    <a href="https://oguzkabasakal.com">Oguz Kabasakal</a>
-    using
+  <sub>Built with ❤️ by using
     <a href="https://github.com/kabaskill/minimal-react">minimal-react</a></sub>
 </div>
