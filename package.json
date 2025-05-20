@@ -1,22 +1,22 @@
 {
-  "name": "minimal-react",
+  "name": "blitz-react",
   "version": "0.1.0",
   "description": "CLI tool for creating minimal React applications with zero configuration",
   "main": "dist/index.js",
   "bin": {
-    "minimal-react": "./dist/cli.js"
+    "blitz-react": "./dist/cli.js"
   },
   "files": [
     "dist",
     "templates"
   ],
   "type": "module",
-  "keywords": ["react", "starter", "cli", "boilerplate", "minimal", "create-react-app", "alternative"],
+  "keywords": ["react", "starter", "cli", "boilerplate", "minimal", "create-react-app", "alternative", "blitz"],
   "author": "Oguz Kabasakal <oguzkabasakal@gmail.com>",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/kabaskill/minimal-react"
+    "url": "https://github.com/kabaskill/blitz-react"
   },
   "scripts": {
     "build": "tsc",

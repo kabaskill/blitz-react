@@ -69,7 +69,7 @@ async function createProject(options: UserOptions): Promise<void> {
   console.clear();
 
   console.log(pc.cyan(pc.bold("====================================")));
-  console.log(pc.cyan(pc.bold("  Minimalist React  ")));
+  console.log(pc.cyan(pc.bold("   ⚡    Blitz React   ⚡    ")));
   console.log(pc.cyan(pc.bold("====================================")));
   console.log("");
   console.log(pc.white("Let's set up your new project!\n"));
@@ -126,7 +126,7 @@ async function createProject(options: UserOptions): Promise<void> {
 }
 
 program
-  .name("minimal-react")
+  .name("blitz-react")
   .description("Create a new React project with minimal setup")
   .version("0.1.0")
   .argument("[project-name]")

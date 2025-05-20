@@ -1,4 +1,4 @@
-# Create Minimalist React App
+# Blitz React
 
 A modern CLI tool to quickly scaffold React applications with minimal setup but all the essential tools you need to be productive. This tool creates a streamlined developer experience without unnecessary bloat.
 
@@ -14,7 +14,7 @@ A modern CLI tool to quickly scaffold React applications with minimal setup but 
 
 
 ```bash
-npm install -g minimal-react
+npm install -g blitz-react
 ```
 
 ## Usage
@@ -22,7 +22,7 @@ npm install -g minimal-react
 ### Quick Start
 
 ```bash
-minimal-react my-app
+blitz-react my-app
 ```
 
 This command will:
@@ -37,7 +37,7 @@ This command will:
 Run without arguments for an interactive prompt:
 
 ```bash
-minimal-react
+blitz-react
 ```
 
 The CLI will guide you through the following options:
@@ -60,13 +60,13 @@ The CLI will guide you through the following options:
 
 ```bash
 # Create a TypeScript project
-minimal-react my-ts-app --template react-ts
+blitz-react my-ts-app --template react-ts
 
 # Create a JavaScript project without installing dependencies
-minimal-react my-js-app --template react-js --no-install
+blitz-react my-js-app --template react-js --no-install
 
 # Create a project without git initialization
-minimal-react my-app --no-git
+blitz-react my-app --no-git
 ```
 
 ## Generated Project Structure
@@ -150,8 +150,8 @@ Contributions are welcome and appreciated! Here's how you can contribute:
 1. **Fork the repository** and create your branch from `main`
 2. **Clone your fork** and set up the development environment:
    ```bash
-   git clone https://github.com/kabaskill/minimal-react.git
-   cd minimal-react
+   git clone https://github.com/kabaskill/blitz-react.git
+   cd blitz-react
    npm install
    ```
 3. **Make your changes** and test them thoroughly
@@ -164,12 +164,12 @@ Contributions are welcome and appreciated! Here's how you can contribute:
 1. Run `npm link` to use your local development version
 2. Make changes to the codebase
 3. Test your changes by running the CLI in a separate directory
-4. Use `npm unlink minimal-react` when you're done
+4. Use `npm unlink blitz-react` when you're done
 
 ### Project Structure
 
 ```
-minimal-react/
+blitz-react/
 ├── src/
 │   ├── cli.ts           # Main CLI entry point
 │   ├── config.ts        # Configuration and template settings

@@ -15,7 +15,7 @@ export async function initializeGit(targetDir: string): Promise<void> {
   try {
     await execAsync("git init", { cwd: targetDir });
     await execAsync("git add .", { cwd: targetDir });
-    await execAsync('git commit -m "Initial commit from minimalist-react"', { cwd: targetDir });
+    await execAsync('git commit -m "Initial commit from blitz-react"', { cwd: targetDir });
     console.log(pc.green("Git repository initialized successfully!"));
   } catch (error) {
     console.warn(pc.yellow("Warning: Git initialization failed. You can initialize git manually."));
