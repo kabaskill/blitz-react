@@ -2,12 +2,10 @@
 
 A modern CLI tool to quickly scaffold React applications with minimal setup but all the essential tools you need to be productive. This tool creates a streamlined developer experience without unnecessary bloat.
 
-## Features
+## Features 
 
-- 🚀 **Fast Setup**: Generate a complete React project in seconds
-- ⚡ **Vite-powered**: Lightning-fast development server and optimized builds
-- 🎨 **Tailwind CSS**: Pre-configured for utility-first styling
-- 🔍 **TypeScript Support**: Optional static typing for improved developer experience
+- ⚡ **Vite**: For optimized builds and fast build times, the tool bundles the apps with Vite
+- 🎨 **Tailwind v4**: Pretty much nothing needed to be said here 
 - 📦 **Minimal Dependencies**: Only the essential packages you need
 - 🧹 **Clean Structure**: Logical project organization with no unnecessary files
 - 🔄 **Git Integration**: Automatic repo initialization (optional)
@@ -80,19 +78,19 @@ The tool creates a clean, minimal React project structure:
 ```
 my-app/
 ├── public/
-│   └── vite.svg
+│   
 ├── src/
 │   ├── App.jsx (or App.tsx)
 │   ├── main.jsx (or main.tsx)
 │   ├── components/
-│   │   └── .gitkeep
-│   └── styles.css
+│   │   └── Footer.jsx (or Footer.tsx)    //You can delete this footer component freely
+│   └── styles.css                        //There are some nice colors here - inspired by Dracula theme
+│
 ├── .gitignore
 ├── eslint.config.js
 ├── index.html
 ├── package.json
 ├── README.md
-├── tailwind.config.js
 ├── tsconfig.json (TypeScript only)
 └── vite.config.js (or vite.config.ts)
 ```
@@ -101,7 +99,6 @@ my-app/
 
 - **package.json**: Contains project dependencies and scripts
 - **vite.config.js/ts**: Vite configuration with React plugin
-- **tailwind.config.js**: Tailwind CSS configuration
 - **tsconfig.json**: TypeScript configuration (only for TS projects)
 - **eslint.config.js**: ESLint configuration with React rules
 
@@ -120,26 +117,21 @@ npm run build
 npm run preview
 ```
 
-## Technologies
+## Tech Stack
 
-The generated projects use modern web development tools:
-
-- **React**: Latest version with hooks and functional components
-- **Tailwind CSS**: Utility-first CSS framework
+- **React 19**: Latest version of React
+- **Tailwind v4**: Utility-first CSS framework
 - **Vite**: Next-generation frontend tooling
 - **TypeScript**: Optional static type checking
 - **ESLint**: Code linting with React-specific rules
 
 Each dependency is automatically fetched at its latest stable version during project creation.
 
-## Customization
+## Planned Features
 
-After generating a project, you can easily customize it by:
-
-1. Adding additional dependencies through npm/yarn
-2. Modifying the Vite configuration for custom build settings
-3. Extending Tailwind configuration for your design system
-4. Adding your preferred testing framework
+ - Project folder alias creation option for more accessible imports
+ - Some sort of router option for React projects
+ - More frameworks (Vue, Svelte, Next etc.)
 
 ## Troubleshooting
 
@@ -149,7 +141,8 @@ If you encounter any issues during installation or project generation:
 2. Check that npm is properly configured
 3. Make sure you have write permissions in your target directory
 
-If installation fails, the CLI will offer to clean up any partially created files.
+If installation fails, the CLI will offer to clean up any partially created files. This is feature was hard to test, so always check the project location for undeleted files if the cli fails for some reason.
+
 
 ## Contributing
 
@@ -194,9 +187,3 @@ minimal-react/
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
-
-## Acknowledgments
-
-- Inspired by Create React App and modern React tooling
-- Built with TypeScript and Node.js
-- Uses Handlebars for template processing
