@@ -128,7 +128,7 @@ async function createProject(options: UserOptions): Promise<void> {
 program
   .name("blitz-react")
   .description("Create a new React project with minimal setup")
-  .version("0.1.0")
+  .version("0.1.1")
   .argument("[project-name]")
   .option("-t, --template <template>", "Template to use (react-js, react-ts)")
   .option("--no-install", "Skip installing dependencies")
