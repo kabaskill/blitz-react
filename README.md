@@ -129,6 +129,7 @@ Each dependency is automatically fetched at its latest stable version during pro
 
 ## Planned Features
 
+ - A testing framework 
  - Project folder alias creation option for more accessible imports
  - Some sort of router option for React projects
  - More frameworks (Vue, Svelte, Next etc.)
