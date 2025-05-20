@@ -55,8 +55,6 @@ The CLI will guide you through the following options:
 | `-t, --template <template>` | Template to use: `react-js` or `react-ts` |
 | `--no-install`              | Skip installing dependencies              |
 | `--no-git`                  | Skip git repository initialization        |
-| `-v, --version`             | Display version information               |
-| `--help`                    | Show help information                     |
 
 ### Examples
 
