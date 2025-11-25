@@ -32,11 +32,21 @@ async function generatePackageJson(targetDir: string, options: UserOptions): Pro
     const templateContent = await fs.readFile(templatePath, "utf8");
     const template = Handlebars.compile(templateContent);
 
-    // Convert dependency objects to arrays of package names
+    // Convert dependency objects to arrays with name and version
+    const dependencyList = Object.entries(dependencies).map(([name, version]) => ({
+      name,
+      version,
+    }));
+
+    const devDependencyList = Object.entries(devDependencies).map(([name, version]) => ({
+      name,
+      version,
+    }));
+
     const packageJson = template({
       projectName: options.projectName,
-      dependencies: Object.keys(dependencies),
-      devDependencies: Object.keys(devDependencies),
+      dependencies: dependencyList,
+      devDependencies: devDependencyList,
       isTypeScript: options.template === "react-ts",
     });
 
@@ -96,6 +106,11 @@ async function processTemplateDirectory(
 
     for (const entry of entries) {
       const entrySourcePath = path.join(sourceDir, relativePath, entry.name);
+
+      // Skip package.json.hbs - it's handled separately by generatePackageJson
+      if (entry.name === "package.json.hbs") {
+        continue;
+      }
 
       let targetFileName = entry.name
         .replace(".hbs", "")

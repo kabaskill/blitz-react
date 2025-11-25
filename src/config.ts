@@ -14,8 +14,30 @@ export async function getLatestVersion(packageName: string): Promise<string> {
   }
 
   try {
-    const { stdout } = await execAsync(`npm show ${packageName} version`);
-    const version = stdout.trim();
+    // Use npm view with json output to ensure we get the latest version
+    // and bypass potential cache issues
+    const { stdout } = await execAsync(
+      `npm view ${packageName} version --json 2>/dev/null || npm show ${packageName} version`
+    );
+    let version = stdout.trim();
+    
+    // Remove quotes if present (json output may include quotes)
+    version = version.replace(/^"(.*)"$/, "$1");
+    
+    // Validate that we got a valid semantic version
+    if (!version || version === "latest" || !version.match(/^\d+\.\d+\.\d+/)) {
+      // Fallback: Try to get the dist-tags latest version
+      try {
+        const { stdout: tagOutput } = await execAsync(
+          `npm view ${packageName} dist-tags.latest`
+        );
+        version = tagOutput.trim();
+      } catch {
+        console.warn(pc.yellow(`Warning: Could not fetch latest version for ${packageName}`));
+        return "latest";
+      }
+    }
+    
     // Cache the result
     versionCache.set(packageName, version);
     return version;
@@ -77,14 +99,18 @@ export async function getDependencies(template: TemplateType) {
   // Create an object with package names as keys and versions as values
   const dependencyMap = Object.fromEntries(
     dependencies.map((dep) => {
-      const [name, version] = dep.split("@");
+      const lastAtIndex = dep.lastIndexOf("@");
+      const name = dep.substring(0, lastAtIndex);
+      const version = dep.substring(lastAtIndex + 1);
       return [name, version];
     })
   );
 
   const devDependencyMap = Object.fromEntries(
     devDependencies.map((dep) => {
-      const [name, version] = dep.split("@");
+      const lastAtIndex = dep.lastIndexOf("@");
+      const name = dep.substring(0, lastAtIndex);
+      const version = dep.substring(lastAtIndex + 1);
       return [name, version];
     })
   );

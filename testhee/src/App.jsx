@@ -9,7 +9,7 @@ function App() {
       <section className="flex flex-1 flex-col items-center justify-center p-4">
         <div className="w-full max-w-xl space-y-12 rounded-lg bg-foreground p-6 shadow-md animate-fade-in">
           <h1 className="text-3xl font-bold text-center text-gray-800">
-            {{projectName}}
+            testhee
           </h1>
           <p className="text-center text-xl font-bold text-secondary animate-bounce">
             🎉 Hurray! 🎉

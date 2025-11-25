@@ -1,12 +1,9 @@
-# {{projectName}}
+# testhee
 
 <div align="center">
   [![Made with React](https://img.shields.io/badge/Made%20with-React-61DAFB?style=flat-square&logo=react)](https://reactjs.org/)
   [![Powered by Vite](https://img.shields.io/badge/Powered%20by-Vite-646CFF?style=flat-square&logo=vite)](https://vitejs.dev/)
   [![Using Tailwind v4](https://img.shields.io/badge/Using-Tailwind%20CSS-38B2AC?style=flat-square&logo=tailwind-css)](https://tailwindcss.com/)
-  {{#if isTypeScript}}
-    [![TypeScript](https://img.shields.io/badge/Built%20with-TypeScript-3178C6?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
-  {{/if}}
 </div>
 
 ## 🚀 Quick Start
