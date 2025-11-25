@@ -1,6 +1,6 @@
 {
   "name": "blitz-react",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "CLI tool for creating minimal React applications with zero configuration",
   "main": "dist/index.js",
   "bin": {
